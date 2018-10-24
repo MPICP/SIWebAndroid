@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Study">
+        <menu>
+            <item
+                android:id="@+id/nav_grade_and_absense"
+                android:icon="@drawable/ic_assessment_black_24dp"
+                android:title="Grade and Absense" />
+            <item
+                android:id="@+id/nav_classtime"
+                android:icon="@drawable/ic_schedule_black_24dp"
+                android:title="Class Time" />
+            <item
+                android:id="@+id/nav_examtime"
+                android:icon="@drawable/ic_description_black_24dp"
+                android:title="Exam Time" />
+
+        </menu>
+    </item>
+
+    <item android:title="Files">
+        <menu>
+            <item
+                android:id="@+id/nav_udrive"
+                android:icon="@drawable/ic_folder_shared_black_24dp"
+                android:title="U Drive" />
+            <item
+                android:id="@+id/nav_hand_in_out"
+                android:icon="@drawable/ic_folder_black_24dp"
+                android:title="Hand In &amp; Out" />
+        </menu>
+    </item>
+
+    <item android:title="Service">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Venue" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Requisition of Various Doc" />
+        </menu>
+    </item>
+
+</menu>
