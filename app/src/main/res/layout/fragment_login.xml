@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <ImageView
+            android:id="@+id/imageLogoView"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <EditText
+            android:id="@+id/studentID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageLogoView"
+            android:ems="10"
+            android:hint="Student ID"
+            android:inputType="textCapCharacters" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/studentID"
+            android:hint="@string/prompt_password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password"
+            android:background="@drawable/button_bg_rounded"
+            android:textColor="@color/colorPrimary"
+            android:text="Login" />
+
+        <ProgressBar
+            android:layout_below="@id/password"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:id="@+id/login_progress"
+            style="?android:attr/progressBarStyle"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

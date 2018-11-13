@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "mo.edu.ipm.cp.siweb"
+        applicationId "mo.edu.ipm.siweb"
         minSdkVersion 23
         targetSdkVersion 27
         versionCode 1
@@ -16,10 +16,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:design:27.1.1'
@@ -28,6 +32,7 @@ dependencies {
     implementation 'it.sysdata.mobile:fancyaccordionview:1.0.0'
     implementation 'com.github.alamkanak:android-week-view:1.2.6'
     implementation 'org.samba.jcifs:jcifs:1.3.18-kohsuke-1'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
