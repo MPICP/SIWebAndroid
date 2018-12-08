@@ -68,6 +68,15 @@ public class HttpRequest {
         return response;
     }
 
+    /**
+     * Handle HTTP exception
+     * <p>
+     * Since SIWeb always returns 200 OK, we have to determine by ourselves
+     * This method will throws a HTTP exception
+     *
+     * @param response
+     * @throws IOException
+     */
     public void handleException(Connection.Response response) throws IOException {
 //        if (response.parse().getElementsByTag("title").get(0).text().contains("401 Authorization Required")) {
 //            throw new HttpStatusException("Unauthorized", 401, response.url().toString());
@@ -125,7 +134,7 @@ public class HttpRequest {
      */
     public Connection.Response getGradesAndAbsence(String year) throws IOException {
         Connection.Response response = request("/grade.asp")
-                .header("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .data("sel_year", year)
                 .method(Connection.Method.POST)
                 .execute();
@@ -155,10 +164,24 @@ public class HttpRequest {
      * Get class timetable
      *
      * @return
-     * @throws Exception
+     * @throws IOException
      */
     public Connection.Response getClassTime() throws IOException {
         Connection.Response response = request("/time_stud.asp").execute();
+
+        handleException(response);
+
+        return response;
+    }
+
+    /**
+     * Get exam time
+     *
+     * @return
+     * @throws IOException
+     */
+    public Connection.Response getExamTime() throws IOException {
+        Connection.Response response = request("/examtime_stud.asp").execute();
 
         handleException(response);
 

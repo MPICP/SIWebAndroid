@@ -18,6 +18,7 @@
 package mo.edu.ipm.siweb.ui.common;
 
 import android.support.annotation.LayoutRes;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,21 +28,33 @@ import com.sysdata.widget.accordion.CollapsedViewHolder;
 import com.sysdata.widget.accordion.ExpandableItemHolder;
 import com.sysdata.widget.accordion.ItemAdapter;
 
+import org.w3c.dom.Text;
+
 import mo.edu.ipm.siweb.R;
+import mo.edu.ipm.siweb.data.model.GradesAndAbsence;
+import mo.edu.ipm.siweb.ui.GradeAndAbsenceListFragment;
 
 public final class GaaCollapsedViewHolder extends CollapsedViewHolder {
 
+    private TextView mDescTextView;
     private TextView mTitleTextView;
 
     private GaaCollapsedViewHolder(View itemView) {
         super(itemView);
 
-        mTitleTextView = (TextView) itemView.findViewById(R.id.sample_layout_collapsed_title);
+        mTitleTextView = (TextView) itemView.findViewById(R.id.gaa_layout_collapsed_title);
+        mDescTextView = itemView.findViewById(R.id.gaa_layout_collapsed_desc);
+
+        itemView.setOnLongClickListener(t -> {
+            GradeAndAbsenceListFragment.showDetails((GradesAndAbsence.GradeAndAbsence) getItemHolder().item);
+            return true;
+        });
     }
 
     @Override
     protected void onBindItemView(ExpandableItemHolder itemHolder) {
-        mTitleTextView.setText(((GaaItem) itemHolder.item).getTitle());
+        mTitleTextView.setText(((GradesAndAbsence.GradeAndAbsence) itemHolder.item).getTitle());
+        mDescTextView.setText(((GradesAndAbsence.GradeAndAbsence) itemHolder.item).getDescription());
     }
 
     @Override

@@ -9,28 +9,45 @@
     android:paddingStart="16dp">
 
     <TextView
-        android:id="@+id/sample_layout_expanded_title"
+        android:id="@+id/gaa_layout_expanded_title"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:gravity="center_vertical"
         android:textColor="@android:color/black"
         tools:text="Expanded View" />
 
     <TextView
-        android:id="@+id/sample_layout_expanded_description"
+        android:id="@+id/gaa_layout_expanded_desc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/sample_layout_expanded_title"
+        android:layout_below="@+id/gaa_layout_expanded_title"
         android:gravity="top"
-        android:minHeight="48dp"
         android:paddingBottom="8dp"
         tools:text="I'm an Expanded View" />
 
+    <TextView
+        android:id="@+id/gaa_layout_expanded_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gaa_layout_expanded_desc"
+        android:paddingBottom="8dp"
+        tools:text="CA Mark: 90, Exam: 90, Final: 90, Grade: A" />
+
+    <TextView
+        android:id="@+id/gaa_layout_expanded_last_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gaa_layout_expanded_grade"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        android:paddingBottom="8dp"
+        tools:text="Last entry: 2018-11-11" />
+
     <com.sysdata.widget.accordion.ArrowImageView
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="72dp"
         android:layout_alignParentRight="true"
         android:tint="@android:color/black"
         app:expanded="true" />

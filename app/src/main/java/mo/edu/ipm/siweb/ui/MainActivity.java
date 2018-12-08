@@ -1,6 +1,7 @@
 package mo.edu.ipm.siweb.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
@@ -46,8 +47,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mStudentID = navigationView.findViewById(R.id.navStudentID);
-        mStudentName = navigationView.findViewById(R.id.navStudentName);
+        mStudentID = navigationView.getHeaderView(0).findViewById(R.id.navStudentID);
+        mStudentName = navigationView.getHeaderView(0).findViewById(R.id.navStudentName);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -90,6 +91,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            // Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            // startActivity(intent);
             return true;
         }
 
@@ -110,13 +113,16 @@ public class MainActivity extends AppCompatActivity
             mAppBarLayout.setElevation(0);
             fragment = new GradeAndAbsenceFragment();
         } else if (id == R.id.nav_class_time) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            mAppBarLayout.setElevation(8);
+            fragment = new ClassTimeFragment();
+        } else if (id == R.id.nav_exam_time) {
+            mAppBarLayout.setElevation(8);
+            fragment = new ExamTimeFragment();
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
         }
 
 

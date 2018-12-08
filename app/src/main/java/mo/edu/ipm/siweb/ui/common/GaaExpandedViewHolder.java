@@ -27,7 +27,11 @@ import com.sysdata.widget.accordion.ExpandableItemHolder;
 import com.sysdata.widget.accordion.ExpandedViewHolder;
 import com.sysdata.widget.accordion.ItemAdapter;
 
+import org.w3c.dom.Text;
+
 import mo.edu.ipm.siweb.R;
+import mo.edu.ipm.siweb.data.model.GradesAndAbsence;
+import mo.edu.ipm.siweb.ui.GradeAndAbsenceListFragment;
 
 /**
  * Created on 06/04/17.
@@ -38,18 +42,34 @@ public final class GaaExpandedViewHolder extends ExpandedViewHolder {
 
     private TextView mTitleTextView;
     private TextView mDescriptionTextView;
+    private TextView mLastEntryInfoView;
+    private TextView mInfoTextView;
 
     private GaaExpandedViewHolder(View itemView) {
         super(itemView);
 
-        mTitleTextView = (TextView) itemView.findViewById(R.id.sample_layout_expanded_title);
-        mDescriptionTextView = (TextView) itemView.findViewById(R.id.sample_layout_expanded_description);
+        mTitleTextView = (TextView) itemView.findViewById(R.id.gaa_layout_expanded_title);
+        mDescriptionTextView = (TextView) itemView.findViewById(R.id.gaa_layout_expanded_desc);
+        mInfoTextView = (TextView) itemView.findViewById(R.id.gaa_layout_expanded_grade);
+        mLastEntryInfoView = (TextView) itemView.findViewById(R.id.gaa_layout_expanded_last_entry);
+
+        itemView.setOnLongClickListener(t -> {
+            GradeAndAbsenceListFragment.showDetails((GradesAndAbsence.GradeAndAbsence) getItemHolder().item);
+            return true;
+        });
     }
 
     @Override
     protected void onBindItemView(ExpandableItemHolder itemHolder) {
-        mTitleTextView.setText(((GaaItem) itemHolder.item).getTitle());
-        mDescriptionTextView.setText(((GaaItem) itemHolder.item).getDescription());
+        mTitleTextView.setText(((GradesAndAbsence.GradeAndAbsence) itemHolder.item).getTitle());
+        mDescriptionTextView.setText(((GradesAndAbsence.GradeAndAbsence) itemHolder.item).getDescription());
+        mInfoTextView.setText(((GradesAndAbsence.GradeAndAbsence) itemHolder.item).getInfo());
+        String lastEntry = ((GradesAndAbsence.GradeAndAbsence) itemHolder.item).getLastEntryDate();
+        if (lastEntry == null) {
+            mLastEntryInfoView.setVisibility(View.GONE);
+        } else {
+            mLastEntryInfoView.setText(lastEntry);
+        }
     }
 
     @Override

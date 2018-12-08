@@ -51,17 +51,6 @@ public class LoginFragment extends Fragment {
                 new LoginTask().execute(id, password);
             }
         });
-
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        String studentID = sharedPreferences.getString("studentID", "");
-        String password = sharedPreferences.getString("password", "");
-
-        if (!studentID.isEmpty() || !password.isEmpty()) {
-            mStudentIDTextView.setText(studentID);
-            mStudentPasswordTextView.setText(password);
-            mLoginButton.setVisibility(View.INVISIBLE);
-            new LoginTask().execute(studentID, password);
-        }
     }
 
     private boolean checkInputs(String id, String password) {
@@ -86,11 +75,11 @@ public class LoginFragment extends Fragment {
         return true;
     }
 
-    private class LoginTask extends AsyncTask<String, Void, Integer> {
+    public class LoginTask extends AsyncTask<String, Void, Integer> {
 
-        private final Integer LOGIN_SUCCESS = 1;
-        private final Integer LOGIN_FAILURE = 2;
-        private final Integer LOGIN_IO_FAILURE = 3;
+        public final Integer LOGIN_SUCCESS = 1;
+        public final Integer LOGIN_FAILURE = 2;
+        public final Integer LOGIN_IO_FAILURE = 3;
 
         @Override
         protected Integer doInBackground(String... strings) {

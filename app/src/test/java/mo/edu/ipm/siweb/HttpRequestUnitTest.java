@@ -15,14 +15,4 @@ public class HttpRequestUnitTest {
 
     HttpRequest request = HttpRequest.getInstance();
 
-    @Test
-    public void login_isCorrect() {
-        assertTrue(request.login("P1709046", ""));
-        assertFalse(request.login("P1234567", "FakePassword"));
-    }
-
-    @Test
-    public void academicYear_isCorrect() throws Exception{
-        assertNotNull(request.getAcademicYearForGrade());
-    }
 }
