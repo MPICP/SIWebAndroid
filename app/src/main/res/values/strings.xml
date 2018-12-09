@@ -102,4 +102,6 @@
     <string name="title_activity_collapsed_view_holder">CollapsedViewHolder</string>
     <string name="title_activity_main">SIWeb</string>
     <string name="title_grade_and_absence"><![CDATA[Grade & absence]]></string>
+    <string name="title_exam_time">Exam time</string>
+    <string name="title_class_time">Class time</string>
 </resources>

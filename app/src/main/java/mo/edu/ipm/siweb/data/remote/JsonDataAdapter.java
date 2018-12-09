@@ -183,7 +183,6 @@ public class JsonDataAdapter {
             String prevClassCode = "";
             String prevSubject = "";
 
-
             for (Element tr : tableRows) {
                 Elements tds = tr.getElementsByTag("td");
                 JSONObject classTimeItem = new JSONObject();
@@ -191,19 +190,21 @@ public class JsonDataAdapter {
                 int i = 1, f = 0;
                 // add same class with different time
                 if (tds.get(0).attr("colspan").equals("3")) {
-                    classTimeItem.put(fields[f], prevClassCode);
-                    classTimeItem.put(fields[f], prevSubject);
+                    classTimeItem.put(fields[f++], prevClassCode);
+                    classTimeItem.put(fields[f++], prevSubject);
                 } else {
                     String currClassCode = tds.get(i++).text();
                     String currSubject = tds.get(i++).text();
-                    classTimeItem.put(fields[f], currClassCode);
-                    classTimeItem.put(fields[f], currSubject);
+
+                    classTimeItem.put(fields[f++], currClassCode);
+                    classTimeItem.put(fields[f++], currSubject);
+
                     prevClassCode = currClassCode;
                     prevSubject = currSubject;
                 }
 
                 // skip creation of week
-                for (++f; f != fields.length - 1; ++f) {
+                for (; f != fields.length - 1; ++f) {
                     classTimeItem.put(fields[f], tds.get(i++).text());
                 }
 
@@ -219,7 +220,7 @@ public class JsonDataAdapter {
 
                 classTime.put(classTimeItem);
             }
-
+            Log.i(TAG, classTime.toString());
             return classTime;
         } catch (JSONException je) {
             Log.e(TAG, je.toString(), je);

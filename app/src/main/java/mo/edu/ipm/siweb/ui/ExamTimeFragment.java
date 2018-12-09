@@ -50,6 +50,12 @@ public class ExamTimeFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.title_exam_time);
+    }
+
     private class ExamTimeViewHolder extends RecyclerView.ViewHolder {
 
         public TextView time;
