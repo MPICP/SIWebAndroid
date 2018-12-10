@@ -3,7 +3,6 @@ package mo.edu.ipm.siweb.data.model;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.widget.TextView;
 
 import com.sysdata.widget.accordion.Item;
 
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
-import mo.edu.ipm.siweb.util.StartLoginActivityOnAuthFailed;
 
 public class GradesAndAbsence extends ViewModel {
 
