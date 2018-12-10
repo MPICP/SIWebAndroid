@@ -104,4 +104,9 @@
     <string name="title_grade_and_absence"><![CDATA[Grade & absence]]></string>
     <string name="title_exam_time">Exam time</string>
     <string name="title_class_time">Class time</string>
+    <string name="home">Home</string>
+    <string name="class_time">Class time</string>
+    <string name="exam_time">Exam time</string>
+    <string name="schedule">Schedule</string>
+    <string name="grade_amp_absence"><![CDATA[Grade & absence]]></string>
 </resources>

@@ -3,6 +3,7 @@ package mo.edu.ipm.siweb.data.model;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.graphics.Color;
 import android.util.Log;
 
 import com.alamkanak.weekview.WeekViewEvent;

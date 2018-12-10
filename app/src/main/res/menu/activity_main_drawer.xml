@@ -3,28 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home_black_24dp"
-            android:title="Home" />
-        <item
-            android:id="@+id/nav_grade_and_absence"
-            android:icon="@drawable/ic_assessment_black_24dp"
-            android:title="Grade &amp; absence" />
-        <item
-            android:id="@+id/nav_class_time"
-            android:icon="@drawable/ic_schedule_black_24dp"
-            android:title="Class time" />
-        <item
-            android:id="@+id/nav_exam_time"
-            android:icon="@drawable/ic_info_black_24dp"
-            android:title="Exam time" />
-        <!--<item-->
-        <!--android:id="@+id/nav_manage"-->
-        <!--android:icon="@drawable/ic_menu_manage"-->
-        <!--android:title="Tools" />-->
-    </group>
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/home" />
+
+    <item android:title="@string/schedule">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/nav_class_time"
+                    android:icon="@drawable/ic_schedule_black_24dp"
+                    android:title="@string/class_time" />
+                <item
+                    android:id="@+id/nav_exam_time"
+                    android:icon="@drawable/ic_info_black_24dp"
+                    android:title="@string/exam_time" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/nav_grade_and_absence"
+        android:icon="@drawable/ic_assessment_black_24dp"
+        android:title="@string/grade_amp_absence" />
+
 
     <!--<item android:title="Communicate">-->
     <!--<menu>-->
