@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
+import mo.edu.ipm.siweb.exception.NotAuthorizedException;
 import mo.edu.ipm.siweb.util.HttpRequest;
 
 public class JsonDataAdapter {
@@ -29,6 +30,15 @@ public class JsonDataAdapter {
         return instance;
     }
 
+    private boolean checkLoginStatus(Document body) throws IOException, NotAuthorizedException {
+        if (body.getElementsByTag("title").isEmpty()) return false;
+        String title = body.getElementsByTag("title").get(0).text();
+        if (title.contains("401 Authorization Required") || title.isEmpty()) {
+            throw new NotAuthorizedException();
+        }
+        return true;
+    }
+
     public JSONObject login(String id, String password) throws IOException {
         try {
             Document body = request.login(id, password).parse();
@@ -43,9 +53,10 @@ public class JsonDataAdapter {
         }
     }
 
-    public JSONObject getProfile() throws IOException {
+    public JSONObject getProfile() throws IOException, NotAuthorizedException {
         try {
             Document body = request.getProfile().parse();
+            if (!checkLoginStatus(body)) return null;
             Element table = body.getElementsByAttributeValue("width", "600").first();
             Elements tr = table.getElementsByTag("tr");
             JSONObject profile = new JSONObject();
@@ -65,8 +76,11 @@ public class JsonDataAdapter {
         }
     }
 
-    public JSONArray getAcademicYears() throws IOException {
-        Element select = request.getAcademicYears().parse().getElementsByTag("select").first();
+    public JSONArray getAcademicYears() throws IOException, NotAuthorizedException {
+        Document body = request.getAcademicYears().parse();
+        Element select = body.getElementsByTag("select").first();
+
+        if (!checkLoginStatus(body)) return null;
         JSONArray years = new JSONArray();
 
         for (Element option : select.getElementsByAttributeValueNot("value", "SELECT"))
@@ -75,9 +89,11 @@ public class JsonDataAdapter {
         return years;
     }
 
-    public JSONArray getGradesAndAbsence(String year) throws IOException {
+    public JSONArray getGradesAndAbsence(String year) throws IOException, NotAuthorizedException {
         try {
             Document body = request.getGradesAndAbsence(year).parse();
+
+            if (!checkLoginStatus(body)) return null;
             Element table = body.getElementById("result_table")
                     .getElementsByTag("tbody").first();
             Elements tableRows = table.getElementsByTag("tr");
@@ -130,11 +146,12 @@ public class JsonDataAdapter {
         }
     }
 
-    public JSONArray getAttendenceHistory(String yearSem, String cod) throws IOException {
+    public JSONArray getAttendenceHistory(String yearSem, String cod) throws IOException, NotAuthorizedException {
         String[] fields = {"date", "time", "hour", "present", "approvalResult"};
         try {
-            Elements tableRows = request.getAttendenceHistory(yearSem, cod).parse()
-                    .getElementsByTag("tbody")
+            Document body = request.getAttendenceHistory(yearSem, cod).parse();
+            if (!checkLoginStatus(body)) return null;
+            Elements tableRows = body.getElementsByTag("tbody")
                     .get(2)
                     .getElementsByTag("tr");
             JSONArray attendenceHistory = new JSONArray();
@@ -167,11 +184,14 @@ public class JsonDataAdapter {
         }
     }
 
-    // TODO
-    public JSONArray getClassTime() throws IOException {
+    // TODO not showing correctly
+    public JSONArray getClassTime() throws IOException, NotAuthorizedException {
         String[] fields = {"classCode", "subject", "instructor", "room", "period", "time", "week"};
         try {
-            Elements tableRows = request.getClassTime().parse()
+            Document body = request.getClassTime().parse();
+
+            if (!checkLoginStatus(body)) return null;
+            Elements tableRows = body
                     .getElementsByTag("table").get(3)
                     .getAllElements().first().getElementsByTag("tr");
 
@@ -233,9 +253,12 @@ public class JsonDataAdapter {
 //        return list;
     }
 
-    public JSONArray getExamTime() throws IOException {
+    public JSONArray getExamTime() throws IOException, NotAuthorizedException {
         String[] fields = {"date", "time", "classcode", "title", "venue", "comment"};
-        Elements tableRows = request.getExamTime().parse()
+        Document body = request.getExamTime().parse();
+
+        if (!checkLoginStatus(body)) return null;
+        Elements tableRows = body
                 .getElementsByTag("table").get(3)
                 .getAllElements().first().getElementsByTag("tr");
 

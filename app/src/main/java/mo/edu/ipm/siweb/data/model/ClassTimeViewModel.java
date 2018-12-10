@@ -11,6 +11,7 @@ import com.alamkanak.weekview.WeekViewEvent;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.HttpStatusException;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Locale;
 
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
+import mo.edu.ipm.siweb.exception.NotAuthorizedException;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class ClassTimeViewModel extends ViewModel {
     public static final String TAG = "ClassTimeViewModel";
@@ -63,6 +66,8 @@ public class ClassTimeViewModel extends ViewModel {
                 JSONArray classTime = JsonDataAdapter.getInstance().getClassTime();
                 mClassTime = classTime;
             } catch (IOException ioe) {
+            } catch (NotAuthorizedException ex) {
+                CredentialUtil.toggleAuthorizeState();
             }
         });
 

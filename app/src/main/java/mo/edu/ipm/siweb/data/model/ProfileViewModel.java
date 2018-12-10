@@ -11,6 +11,8 @@ import org.jsoup.HttpStatusException;
 import java.io.IOException;
 
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
+import mo.edu.ipm.siweb.exception.NotAuthorizedException;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class ProfileViewModel extends ViewModel {
 
@@ -54,7 +56,8 @@ public class ProfileViewModel extends ViewModel {
                     profile.setId(object.getString("id"));
                     profile.setName(object.getString("name"));
                     mProfile.postValue(profile);
-                } catch (HttpStatusException he) {
+                } catch (NotAuthorizedException nae) {
+                    CredentialUtil.toggleAuthorizeState();
                 } catch (JSONException jsone) {
                 } catch (IOException ioe) {
                 }

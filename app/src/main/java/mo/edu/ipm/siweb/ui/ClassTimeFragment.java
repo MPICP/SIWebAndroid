@@ -22,6 +22,7 @@ import java.util.List;
 
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.model.ClassTimeViewModel;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class ClassTimeFragment extends Fragment {
 
@@ -43,6 +44,7 @@ public class ClassTimeFragment extends Fragment {
         mWeekView.setShowNowLine(true);
         mWeekView.setMonthChangeListener((newYear, newMonth) -> {
             List<WeekViewEvent> lst = mViewModel.getEvents(newYear, newMonth);
+            CredentialUtil.refreshCredential(getContext());
             return lst;
         });
 

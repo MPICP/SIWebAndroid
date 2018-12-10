@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.pref_credential), Context.MODE_PRIVATE);
         String studentID = sharedPreferences.getString("studentID", "");
         String password = sharedPreferences.getString("password", "");
 

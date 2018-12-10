@@ -11,6 +11,8 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
+import mo.edu.ipm.siweb.exception.NotAuthorizedException;
+
 public class HttpRequest {
     private final static String TAG = "HTTPRequestWrapper";
     private Map<String, String> cookies;
@@ -64,23 +66,7 @@ public class HttpRequest {
                 .method(Connection.Method.POST)
                 .execute();
         cookies = response.cookies();
-        handleException(response);
         return response;
-    }
-
-    /**
-     * Handle HTTP exception
-     * <p>
-     * Since SIWeb always returns 200 OK, we have to determine by ourselves
-     * This method will throws a HTTP exception
-     *
-     * @param response
-     * @throws IOException
-     */
-    public void handleException(Connection.Response response) throws IOException {
-//        if (response.parse().getElementsByTag("title").get(0).text().contains("401 Authorization Required")) {
-//            throw new HttpStatusException("Unauthorized", 401, response.url().toString());
-//        }
     }
 
     /**
@@ -91,8 +77,6 @@ public class HttpRequest {
      */
     public Connection.Response getProfile() throws IOException {
         Connection.Response response = request("/stud_info.asp").execute();
-
-        handleException(response);
 
         return response;
     }
@@ -106,8 +90,6 @@ public class HttpRequest {
     public Connection.Response getNews() throws IOException {
         Connection.Response response = request("/mainFrame.htm").execute();
 
-        handleException(response);
-
         return response;
     }
 
@@ -119,8 +101,6 @@ public class HttpRequest {
      */
     public Connection.Response getAcademicYears() throws IOException {
         Connection.Response response = request("/grade.asp").execute();
-
-        handleException(response);
 
         return response;
     }
@@ -139,8 +119,6 @@ public class HttpRequest {
                 .method(Connection.Method.POST)
                 .execute();
 
-        handleException(response);
-
         return response;
     }
 
@@ -155,8 +133,6 @@ public class HttpRequest {
     public Connection.Response getAttendenceHistory(String yearSem, String cod) throws IOException {
         Connection.Response response = request(String.format("/grade_atte.asp?anol_ano=%s&cod=%s&total=1", yearSem, cod)).execute();
 
-        handleException(response);
-
         return response;
     }
 
@@ -169,8 +145,6 @@ public class HttpRequest {
     public Connection.Response getClassTime() throws IOException {
         Connection.Response response = request("/time_stud.asp").execute();
 
-        handleException(response);
-
         return response;
     }
 
@@ -182,8 +156,6 @@ public class HttpRequest {
      */
     public Connection.Response getExamTime() throws IOException {
         Connection.Response response = request("/examtime_stud.asp").execute();
-
-        handleException(response);
 
         return response;
     }

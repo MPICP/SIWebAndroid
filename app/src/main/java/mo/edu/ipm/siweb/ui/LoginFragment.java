@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class LoginFragment extends Fragment {
 
@@ -85,7 +86,8 @@ public class LoginFragment extends Fragment {
         protected Integer doInBackground(String... strings) {
             try {
                 JsonDataAdapter jsonDataAdapter = JsonDataAdapter.getInstance();
-                return jsonDataAdapter.login(strings[0], strings[1]).getBoolean("login") ? LOGIN_SUCCESS : LOGIN_FAILURE;
+                boolean status = jsonDataAdapter.login(strings[0], strings[1]).getBoolean("login");
+                return status ? LOGIN_SUCCESS : LOGIN_FAILURE;
             } catch (HttpStatusException hse) {
                 if (hse.getStatusCode() == 401)
                     return LOGIN_FAILURE;
@@ -101,7 +103,10 @@ public class LoginFragment extends Fragment {
         protected void onPostExecute(Integer result) {
             mProgressBar.setVisibility(View.INVISIBLE);
             if (result == LOGIN_SUCCESS) {
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                CredentialUtil.toggleAuthorizeState();
+                SharedPreferences sharedPref = getContext().getSharedPreferences(getString(R.string.pref_credential),
+                        Context.MODE_PRIVATE);
+
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("studentID", mStudentIDTextView.getText().toString());
                 editor.putString("password", mStudentPasswordTextView.getText().toString());

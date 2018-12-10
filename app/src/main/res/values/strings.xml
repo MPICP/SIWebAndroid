@@ -109,4 +109,5 @@
     <string name="exam_time">Exam time</string>
     <string name="schedule">Schedule</string>
     <string name="grade_amp_absence"><![CDATA[Grade & absence]]></string>
+    <string name="pref_credential">mo.edu.ipm.siweb.pref_credential</string>
 </resources>

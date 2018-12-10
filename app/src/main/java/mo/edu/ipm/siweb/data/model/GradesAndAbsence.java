@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
+import mo.edu.ipm.siweb.exception.NotAuthorizedException;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class GradesAndAbsence extends ViewModel {
 
@@ -166,9 +168,9 @@ public class GradesAndAbsence extends ViewModel {
                     ar.add(new AttendenceRecord(data.getJSONObject(i)));
                 mAttendenceHistory.postValue(ar);
             } catch (JSONException e) {
-
             } catch (IOException ioe) {
-
+            } catch (NotAuthorizedException nae) {
+                CredentialUtil.toggleAuthorizeState();
             }
         }).start();
     }
@@ -186,6 +188,8 @@ public class GradesAndAbsence extends ViewModel {
 
             } catch (JSONException je) {
 
+            } catch (NotAuthorizedException nae) {
+                CredentialUtil.toggleAuthorizeState();
             }
         }).start();
     }
@@ -194,8 +198,8 @@ public class GradesAndAbsence extends ViewModel {
         new Thread(() -> {
             try {
                 mYears.postValue(JsonDataAdapter.getInstance().getAcademicYears());
-            } catch (HttpStatusException hse) {
-                StartLoginActivityOnAuthFailed.start(hse);
+            } catch (NotAuthorizedException nae) {
+                CredentialUtil.toggleAuthorizeState();
             } catch (IOException e) {
                 // handle io exception
             }

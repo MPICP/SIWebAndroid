@@ -23,6 +23,7 @@ import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.model.GradesAndAbsence;
 import mo.edu.ipm.siweb.ui.common.GaaCollapsedViewHolder;
 import mo.edu.ipm.siweb.ui.common.GaaExpandedViewHolder;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class GradeAndAbsenceListFragment extends Fragment {
 
@@ -98,6 +99,7 @@ public class GradeAndAbsenceListFragment extends Fragment {
             mRecyclerView.setAdapterItems(items);
             mRecyclerView.setVisibility(View.VISIBLE);
             mSpinnerView.setVisibility(View.GONE);
+            CredentialUtil.refreshCredential(getContext());
         });
     }
 

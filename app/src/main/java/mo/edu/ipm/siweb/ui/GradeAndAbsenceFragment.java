@@ -25,6 +25,7 @@ import org.json.JSONException;
 
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.model.GradesAndAbsence;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class GradeAndAbsenceFragment extends Fragment {
     // TODO save the state of this fragment
@@ -62,6 +63,7 @@ public class GradeAndAbsenceFragment extends Fragment {
             } catch (JSONException jsone) {
                 Snackbar.make(getView(), "Error retrieving years", Snackbar.LENGTH_LONG);
             }
+            CredentialUtil.refreshCredential(getContext());
         });
     }
 

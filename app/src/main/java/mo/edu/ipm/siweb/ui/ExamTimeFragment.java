@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,11 @@ import java.util.List;
 
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.model.ExamTimeViewModel;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class ExamTimeFragment extends Fragment {
 
+    private static final String TAG = "ExamTimeFragment";
     private ExamTimeViewModel mViewModel;
     private RecyclerView rv;
 
@@ -44,9 +47,12 @@ public class ExamTimeFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(ExamTimeViewModel.class);
 
         mViewModel.getExamTime().observe(this, t -> {
+            rv.setAdapter(new ExamTimeRecyclerAdapter(t));
             rv.setLayoutManager(new LinearLayoutManager(getContext()));
             rv.setHasFixedSize(true);
-            rv.setAdapter(new ExamTimeRecyclerAdapter(t));
+
+            CredentialUtil.refreshCredential(getContext());
+            Log.i(TAG, "Credential util refreshed, status " + CredentialUtil.isAuthorized());
         });
     }
 

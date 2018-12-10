@@ -19,6 +19,7 @@ import java.util.List;
 
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.model.GradesAndAbsence;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class GradeAndAbsenceDetailFragment extends Fragment {
 
@@ -48,6 +49,7 @@ public class GradeAndAbsenceDetailFragment extends Fragment {
             rv.setLayoutManager(new LinearLayoutManager(getContext()));
             rv.setHasFixedSize(true);
             rv.setAdapter(new AtteRecordsAdapter(mAtteHistory));
+            CredentialUtil.refreshCredential(getContext());
         });
     }
 
