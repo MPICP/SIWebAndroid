@@ -13,6 +13,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This app is currently in alpha test, functions are incomplete and there are many bugs. To start, swipe right."
+        android:padding="@dimen/text_margin"
+        android:text="@string/alpha_notification"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -1,9 +1,6 @@
 package mo.edu.ipm.siweb.ui;
 
-import android.app.ProgressDialog;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,8 +13,6 @@ import android.widget.Toast;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import mo.edu.ipm.siweb.R;
@@ -43,9 +38,8 @@ public class ClassTimeFragment extends Fragment {
         mWeekView.goToHour(7);
         mWeekView.setShowNowLine(true);
         mWeekView.setMonthChangeListener((newYear, newMonth) -> {
-            List<WeekViewEvent> lst = mViewModel.getEvents(newYear, newMonth);
             CredentialUtil.refreshCredential(getContext());
-            return lst;
+            return mViewModel.getEvents(newYear, newMonth);
         });
 
         mWeekView.setOnEventClickListener((event, eventRect) -> {

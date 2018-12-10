@@ -110,4 +110,5 @@
     <string name="schedule">Schedule</string>
     <string name="grade_amp_absence"><![CDATA[Grade & absence]]></string>
     <string name="pref_credential">mo.edu.ipm.siweb.pref_credential</string>
+    <string name="alpha_notification">This app is currently in alpha test\nfunctions are incomplete and may contain many bugs.\nTo start, swipe right.</string>
 </resources>
