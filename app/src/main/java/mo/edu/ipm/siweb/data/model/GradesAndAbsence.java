@@ -9,15 +9,12 @@ import com.sysdata.widget.accordion.Item;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.HttpStatusException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
-import mo.edu.ipm.siweb.exception.NotAuthorizedException;
-import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class GradesAndAbsence extends ViewModel {
 
@@ -169,8 +166,6 @@ public class GradesAndAbsence extends ViewModel {
                 mAttendenceHistory.postValue(ar);
             } catch (JSONException e) {
             } catch (IOException ioe) {
-            } catch (NotAuthorizedException nae) {
-                CredentialUtil.toggleAuthorizeState();
             }
         }).start();
     }
@@ -188,8 +183,6 @@ public class GradesAndAbsence extends ViewModel {
 
             } catch (JSONException je) {
 
-            } catch (NotAuthorizedException nae) {
-                CredentialUtil.toggleAuthorizeState();
             }
         }).start();
     }
@@ -197,9 +190,8 @@ public class GradesAndAbsence extends ViewModel {
     public void retrieveAcademicYears() {
         new Thread(() -> {
             try {
-                mYears.postValue(JsonDataAdapter.getInstance().getAcademicYears());
-            } catch (NotAuthorizedException nae) {
-                CredentialUtil.toggleAuthorizeState();
+                JSONArray data = JsonDataAdapter.getInstance().getAcademicYears();
+                mYears.postValue(data);
             } catch (IOException e) {
                 // handle io exception
             }

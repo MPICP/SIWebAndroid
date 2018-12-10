@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
-import mo.edu.ipm.siweb.exception.NotAuthorizedException;
-import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class ExamTimeViewModel extends ViewModel {
 
@@ -105,8 +103,6 @@ public class ExamTimeViewModel extends ViewModel {
 
             } catch (IOException ioe) {
             } catch (JSONException je) {
-            } catch (NotAuthorizedException nae) {
-                CredentialUtil.toggleAuthorizeState();
             }
         }).start();
     }

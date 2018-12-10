@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import mo.edu.ipm.siweb.R;
@@ -15,8 +14,12 @@ public class CredentialUtil {
 
     private static boolean authorized = false;
 
-    public static void toggleAuthorizeState() {
-        authorized = !authorized;
+    public static void setUnauthorized() {
+        authorized = false;
+    }
+
+    public static void setAuthorized() {
+        authorized = true;
     }
 
     public static boolean isAuthorized() {

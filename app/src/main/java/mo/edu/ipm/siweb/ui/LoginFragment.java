@@ -103,7 +103,7 @@ public class LoginFragment extends Fragment {
         protected void onPostExecute(Integer result) {
             mProgressBar.setVisibility(View.INVISIBLE);
             if (result == LOGIN_SUCCESS) {
-                CredentialUtil.toggleAuthorizeState();
+                CredentialUtil.setAuthorized();
                 SharedPreferences sharedPref = getContext().getSharedPreferences(getString(R.string.pref_credential),
                         Context.MODE_PRIVATE);
 

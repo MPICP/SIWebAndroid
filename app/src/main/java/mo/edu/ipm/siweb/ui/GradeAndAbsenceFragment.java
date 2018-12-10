@@ -1,8 +1,6 @@
 package mo.edu.ipm.siweb.ui;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -10,15 +8,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,15 +48,16 @@ public class GradeAndAbsenceFragment extends Fragment {
                 "Loading. Please wait...", true);
         mGaaViewModel.getYears().observe(this, t -> {
             try {
+                if (t.length() == 0) return;
                 for (int i = 0; i != t.length(); ++i)
                     mTabLayout.addTab(mTabLayout.newTab().setText(t.getString(i)));
                 mYears = t;
                 initViews();
                 dialog.dismiss();
+                CredentialUtil.refreshCredential(getContext());
             } catch (JSONException jsone) {
                 Snackbar.make(getView(), "Error retrieving years", Snackbar.LENGTH_LONG);
             }
-            CredentialUtil.refreshCredential(getContext());
         });
     }
 

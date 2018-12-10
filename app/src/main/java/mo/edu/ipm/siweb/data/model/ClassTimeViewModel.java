@@ -1,9 +1,7 @@
 package mo.edu.ipm.siweb.data.model;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.graphics.Color;
 import android.util.Log;
 
 import com.alamkanak.weekview.WeekViewEvent;
@@ -11,10 +9,8 @@ import com.alamkanak.weekview.WeekViewEvent;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.HttpStatusException;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,13 +20,11 @@ import java.util.List;
 import java.util.Locale;
 
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
-import mo.edu.ipm.siweb.exception.NotAuthorizedException;
-import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class ClassTimeViewModel extends ViewModel {
     public static final String TAG = "ClassTimeViewModel";
     private MutableLiveData<List<WeekViewEvent>> mEvents;
-    private JSONArray mClassTime;
+    private static JSONArray mClassTime;
     private List<WeekViewEvent> mList = new ArrayList<>();
     private static int mId = 0;
     private boolean isLoading;
@@ -48,9 +42,11 @@ public class ClassTimeViewModel extends ViewModel {
         mEvents = new MutableLiveData<>();
 
         loadClassTime();
+
         try {
-            for (int i = 0; i != mClassTime.length(); ++i)
+            for (int i = 0; i != mClassTime.length(); ++i) {
                 addClassTime(mClassTime.getJSONObject(i), newYear, newMonth);
+            }
         } catch (JSONException je) {
         }
 
@@ -63,11 +59,10 @@ public class ClassTimeViewModel extends ViewModel {
     private void loadClassTime() {
         Thread thread = new Thread(() -> {
             try {
-                JSONArray classTime = JsonDataAdapter.getInstance().getClassTime();
-                mClassTime = classTime;
+                if (mClassTime == null) {
+                    mClassTime = JsonDataAdapter.getInstance().getClassTime();
+                }
             } catch (IOException ioe) {
-            } catch (NotAuthorizedException ex) {
-                CredentialUtil.toggleAuthorizeState();
             }
         });
 
@@ -126,7 +121,7 @@ public class ClassTimeViewModel extends ViewModel {
 
         for (int i = 0; i != week.length(); ++i) {
             if (!week.getBoolean(i)) continue;
-            for (int j = 0; j != daysInMonth; ++j) {
+            for (int j = 1; j <= daysInMonth; ++j) {
                 startCal.set(Calendar.DAY_OF_MONTH, j);
 
                 if (startCal.getTime().compareTo(endDate) > 0) break;
@@ -134,7 +129,7 @@ public class ClassTimeViewModel extends ViewModel {
 
                 int dayOfWeek = startCal.get(Calendar.DAY_OF_WEEK);
 
-                if (dayOfWeek == i + 1) {
+                if (dayOfWeek == (i + 1) % 7) {
                     // add to list
                     Calendar startTime = (Calendar) startCal.clone();
                     Calendar endTime = (Calendar) startTime.clone();

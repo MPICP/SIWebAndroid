@@ -1,16 +1,13 @@
 package mo.edu.ipm.siweb.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -20,6 +17,7 @@ import java.io.IOException;
 
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
+import mo.edu.ipm.siweb.util.CredentialUtil;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -76,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+                CredentialUtil.setAuthorized();
                 // JUMP TO ACTIVITY
             } else {
                 String message = "";
