@@ -31,11 +31,15 @@ public class JsonDataAdapter {
     }
 
     private boolean checkLoginStatus(Document body) {
-        if (body.getElementsByTag("title").isEmpty()) return true;
+        if (body.getElementsByTag("title").isEmpty())
+            return true;
+
         String title = body.getElementsByTag("title").get(0).text();
+
         if (title.contains("401 Authorization Required")) {
             CredentialUtil.setUnauthorized();
-            return false;
+            CredentialUtil.refreshCookie();
+            return CredentialUtil.isAuthorized();
         }
         return true;
     }
@@ -48,15 +52,23 @@ public class JsonDataAdapter {
      * @return
      */
     private boolean checkLoginStatusProfile(Document body) {
-        if (body.getElementsByTag("body").isEmpty()) {
+        Log.i(TAG, "bdy.cns: " + body.body().childNodeSize());
+
+        if (body.body().childNodeSize() == 2) {
             CredentialUtil.setUnauthorized();
-            return false;
+            CredentialUtil.refreshCookie();
+            return CredentialUtil.isAuthorized();
         }
+
         return true;
     }
 
     public JSONObject login(String id, String password) throws IOException {
         try {
+            if (id.isEmpty() || password.isEmpty()) {
+                return new JSONObject().put("login", false);
+            }
+
             Document body = request.login(id, password).parse();
             Element el = body.getElementsContainingText("Invalid NetID or Password").last();
             if (el != null) {
@@ -74,6 +86,8 @@ public class JsonDataAdapter {
         try {
             Document body = request.getProfile().parse();
             if (!checkLoginStatusProfile(body)) return new JSONObject();
+            body = request.getProfile().parse();
+
             Element table = body.getElementsByAttributeValue("width", "600").first();
             Elements tr = table.getElementsByTag("tr");
             JSONObject profile = new JSONObject();
@@ -89,13 +103,14 @@ public class JsonDataAdapter {
 
             return profile;
         } catch (JSONException je) {
-            return null;
+            return new JSONObject();
         }
     }
 
     public JSONArray getAcademicYears() throws IOException {
         Document body = request.getAcademicYears().parse();
         Element select = body.getElementsByTag("select").first();
+        body = request.getAcademicYears().parse();
 
         if (!checkLoginStatus(body)) return new JSONArray();
         JSONArray years = new JSONArray();
@@ -109,8 +124,8 @@ public class JsonDataAdapter {
     public JSONArray getGradesAndAbsence(String year) throws IOException {
         try {
             Document body = request.getGradesAndAbsence(year).parse();
-
             if (!checkLoginStatus(body)) return new JSONArray();
+            body = request.getGradesAndAbsence(year).parse();
 
             Element table = body.getElementById("result_table")
                     .getElementsByTag("tbody").first();
@@ -169,6 +184,8 @@ public class JsonDataAdapter {
         try {
             Document body = request.getAttendenceHistory(yearSem, cod).parse();
             if (!checkLoginStatus(body)) return new JSONArray();
+            body = request.getAttendenceHistory(yearSem, cod).parse();
+
             Elements tableRows = body.getElementsByTag("tbody")
                     .get(2)
                     .getElementsByTag("tr");
@@ -207,8 +224,9 @@ public class JsonDataAdapter {
         String[] fields = {"classCode", "subject", "instructor", "room", "period", "time", "week"};
         try {
             Document body = request.getClassTime().parse();
-
             if (!checkLoginStatus(body)) return new JSONArray();
+            body = request.getClassTime().parse();
+
             Elements tableRows = body
                     .getElementsByTag("table").get(3)
                     .getAllElements().first().getElementsByTag("tr");
@@ -274,8 +292,9 @@ public class JsonDataAdapter {
     public JSONArray getExamTime() throws IOException {
         String[] fields = {"date", "time", "classcode", "title", "venue", "comment"};
         Document body = request.getExamTime().parse();
-
         if (!checkLoginStatus(body)) return new JSONArray();
+        body = request.getExamTime().parse();
+
         Elements tableRows = body
                 .getElementsByTag("table").get(3)
                 .getAllElements().first().getElementsByTag("tr");

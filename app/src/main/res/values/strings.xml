@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in to SIWeb</string>
-    <string name="title_activity_grade_and_absense">Grade &amp; Absense</string>
+    <string name="title_activity_grade_and_absence">Grade &amp; Absence</string>
     <!-- Strings related to login -->
     <string name="prompt_sid">Student ID</string>
     <string name="prompt_password">Password</string>
@@ -111,4 +111,5 @@
     <string name="grade_amp_absence"><![CDATA[Grade & absence]]></string>
     <string name="pref_credential">mo.edu.ipm.siweb.pref_credential</string>
     <string name="alpha_notification">This app is currently in alpha test\nfunctions are incomplete and may contain many bugs.\nTo start, swipe right.</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>

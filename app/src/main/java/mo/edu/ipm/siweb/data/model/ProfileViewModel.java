@@ -1,6 +1,5 @@
 package mo.edu.ipm.siweb.data.model;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
@@ -36,26 +35,23 @@ public class ProfileViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Profile> getProfile() {
-        if (mProfile == null) {
-            mProfile = new MutableLiveData<>();
-            loadProfile();
-        }
+    public MutableLiveData<Profile> getProfile() {
+        mProfile = new MutableLiveData<>();
+        loadProfile();
+
         return mProfile;
     }
 
     private void loadProfile() {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    JSONObject object = JsonDataAdapter.getInstance().getProfile();
-                    Profile profile = new Profile();
-                    profile.setId(object.getString("id"));
-                    profile.setName(object.getString("name"));
-                    mProfile.postValue(profile);
-                } catch (JSONException jsone) {
-                } catch (IOException ioe) {
-                }
+        new Thread(() -> {
+            try {
+                JSONObject object = JsonDataAdapter.getInstance().getProfile();
+                Profile profile = new Profile();
+                profile.setId(object.getString("id"));
+                profile.setName(object.getString("name"));
+                mProfile.postValue(profile);
+            } catch (JSONException jsone) {
+            } catch (IOException ioe) {
             }
         }).start();
     }

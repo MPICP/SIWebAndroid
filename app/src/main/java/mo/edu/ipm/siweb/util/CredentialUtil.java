@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import java.lang.ref.WeakReference;
+import org.json.JSONException;
+
+import java.io.IOException;
 
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.remote.JsonDataAdapter;
@@ -13,6 +15,8 @@ import mo.edu.ipm.siweb.ui.LoginActivity;
 public class CredentialUtil {
 
     private static boolean authorized = false;
+    private static String mStudentID = "";
+    private static String mPassword = "";
 
     public static void setUnauthorized() {
         authorized = false;
@@ -28,27 +32,39 @@ public class CredentialUtil {
 
     public static void refreshCredential(Context context) {
         if (authorized) return;
-        WeakReference<Context> reference = new WeakReference<Context>(context);
-        Context mContext = reference.get();
+        new Thread(() -> {
 
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(context.getString(R.string.pref_credential),
+            refreshSavedCredential(context);
+
+            if (!(mStudentID.isEmpty() || mPassword.isEmpty())) {
+                refreshCookie();
+            }
+
+            if (!authorized) {
+                // cannot refresh session
+                Intent intent = new Intent(context, LoginActivity.class);
+                context.startActivity(intent);
+            }
+        }).start();
+    }
+
+    public static void refreshSavedCredential(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.pref_credential),
                 Context.MODE_PRIVATE);
 
-        String studentID = sharedPreferences.getString("studentID", "");
-        String password = sharedPreferences.getString("password", "");
+        if (mStudentID.isEmpty() || mPassword.isEmpty()) {
+            mStudentID = sharedPreferences.getString("studentID", "");
+            mPassword = sharedPreferences.getString("password", "");
+        }
 
-        if (!studentID.isEmpty() && !password.isEmpty()) {
-            try {
-                JsonDataAdapter.getInstance().login(studentID, password);
-                authorized = true;
-                return;
-            } catch (Exception e) {
-            }
-        } else {
-            // cannot refresh session
-            Intent intent = new Intent(mContext, LoginActivity.class);
-            mContext.startActivity(intent);
-            return;
+    }
+
+    public static void refreshCookie() {
+        try {
+            boolean status = JsonDataAdapter.getInstance().login(mStudentID, mPassword).getBoolean("login");
+            authorized = status;
+        } catch (IOException ioe) {
+        } catch (JSONException je) {
         }
     }
 
