@@ -1,6 +1,7 @@
 package mo.edu.ipm.siweb.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Temporarily running in background for fragment navigation
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -101,6 +105,10 @@ public class MainActivity extends AppCompatActivity
 //
 //        } else if (id == R.id.nav_send) {
 //
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
         }
 
 

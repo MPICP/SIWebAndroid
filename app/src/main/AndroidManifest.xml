@@ -20,6 +20,7 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,8 +34,7 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".ui.GradeAndAbsenceDetailActivity"
             android:parentActivityName=".ui.MainActivity"
@@ -43,6 +43,10 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".ui.HandIODriveActivity"
+            android:label="@string/title_activity_hand_iodrive"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -25,5 +25,6 @@ public class SplashFragment extends Fragment {
 
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 }

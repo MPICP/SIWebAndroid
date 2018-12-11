@@ -9,25 +9,38 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/home" />
 
-    <item android:title="@string/schedule">
-        <menu>
-            <group>
-                <item
-                    android:id="@+id/nav_class_time"
-                    android:icon="@drawable/ic_schedule_black_24dp"
-                    android:title="@string/class_time" />
-                <item
-                    android:id="@+id/nav_exam_time"
-                    android:icon="@drawable/ic_info_black_24dp"
-                    android:title="@string/exam_time" />
-            </group>
-        </menu>
-    </item>
-
     <item
         android:id="@+id/nav_grade_and_absence"
         android:icon="@drawable/ic_assessment_black_24dp"
         android:title="@string/grade_amp_absence" />
+
+
+    <group android:id="@+id/menu_schedule">
+        <item
+            android:id="@+id/nav_class_time"
+            android:icon="@drawable/ic_schedule_black_24dp"
+            android:title="@string/class_time" />
+        <item
+            android:id="@+id/nav_exam_time"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="@string/exam_time" />
+    </group>
+
+    <group android:id="@+id/menu_files">
+        <item
+            android:id="@+id/nav_hand_in_drive"
+            android:icon="@drawable/ic_folder_shared_black_24dp"
+            android:title="@string/hand_in_amp_out_drive" />
+        <item
+            android:id="@+id/nav_u_drive"
+            android:icon="@drawable/ic_folder_black_24dp"
+            android:title="U drive" />
+    </group>
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Settings" />
 
 
     <!--<item android:title="Communicate">-->

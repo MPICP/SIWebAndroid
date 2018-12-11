@@ -34,7 +34,7 @@ public class ClassTimeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mWeekView = (WeekView) view.findViewById(R.id.weekView);
+        mWeekView = view.findViewById(R.id.weekView);
         mWeekView.goToHour(7);
         mWeekView.setShowNowLine(true);
         mWeekView.setMonthChangeListener((newYear, newMonth) -> {
@@ -55,6 +55,7 @@ public class ClassTimeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ClassTimeViewModel.class);
     }
+
 
     @Override
     public void onResume() {
