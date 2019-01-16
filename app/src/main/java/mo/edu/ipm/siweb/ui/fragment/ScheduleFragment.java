@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import mo.edu.ipm.siweb.R;
+import mo.edu.ipm.siweb.ui.component.NoScrollViewPager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +42,7 @@ public class ScheduleFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    private NoScrollViewPager mViewPager;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -135,10 +137,13 @@ public class ScheduleFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
+//                mViewPager.setScroll(false);
                 return new ClassFragment();
             } else if (position == 1){
+//                mViewPager.setScroll(true);
                 return new ExamFragment();
             } else if (position == 2){
+//                mViewPager.setScroll(true);
                 return new AssignmentFragment();
             }
             return null;

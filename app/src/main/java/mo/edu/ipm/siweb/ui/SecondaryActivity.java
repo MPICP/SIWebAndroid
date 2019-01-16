@@ -11,6 +11,8 @@ public class SecondaryActivity extends FragmentActivity {
 
     public static final String ARG_FRAGMENT = "fragment";
 
+    public static final int FRAGMENT_GRADE = 1;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);

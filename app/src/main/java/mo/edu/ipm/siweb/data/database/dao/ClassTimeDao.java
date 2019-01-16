@@ -22,4 +22,7 @@ public interface ClassTimeDao {
 
     @Query("SELECT * FROM classtime")
     LiveData<List<ClassTime>> getClassTime();
+
+    @Query("DELETE FROM classtime")
+    void deleteAll();
 }

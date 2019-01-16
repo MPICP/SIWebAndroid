@@ -42,7 +42,10 @@ public class ClassTimeRepository {
         mSIWebService.getClassesTime().enqueue(new Callback<ClassesTime>() {
             @Override
             public void onResponse(Call<ClassesTime> call, Response<ClassesTime> response) {
-                new Thread(() -> mClassTimeDao.insertMultipleListRecord(response.body().getClassTimeList())).start();
+                new Thread(() -> {
+                    mClassTimeDao.deleteAll();
+                    mClassTimeDao.insertMultipleListRecord(response.body().getClassTimeList());
+                }).start();
             }
 
             @Override

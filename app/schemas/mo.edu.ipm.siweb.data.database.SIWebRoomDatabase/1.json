@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "809c3063f9ce4f42484476a07c3e3a1b",
+    "identityHash": "ed8e8247b0d6767c95753e4802f10534",
     "entities": [
       {
         "tableName": "examtime",
@@ -56,8 +56,14 @@
       },
       {
         "tableName": "classtime",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`classCode` TEXT NOT NULL, `sem` INTEGER NOT NULL, `name` TEXT NOT NULL, `location` TEXT NOT NULL, `instructor` TEXT NOT NULL, `startedAt` INTEGER NOT NULL, `endedAt` INTEGER NOT NULL, `onWeekDays` TEXT NOT NULL, PRIMARY KEY(`classCode`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `classCode` TEXT NOT NULL, `sem` INTEGER NOT NULL, `name` TEXT NOT NULL, `location` TEXT NOT NULL, `instructor` TEXT NOT NULL, `startedAt` INTEGER NOT NULL, `endedAt` INTEGER NOT NULL, `startTime` TEXT NOT NULL, `endTime` TEXT NOT NULL, `onWeekDays` TEXT NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "classCode",
             "columnName": "classCode",
@@ -101,6 +107,18 @@
             "notNull": true
           },
           {
+            "fieldPath": "startTime",
+            "columnName": "startTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endTime",
+            "columnName": "endTime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "onWeekDays",
             "columnName": "onWeekDays",
             "affinity": "TEXT",
@@ -109,9 +127,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "classCode"
+            "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -120,7 +138,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"809c3063f9ce4f42484476a07c3e3a1b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ed8e8247b0d6767c95753e4802f10534\")"
     ]
   }
 }

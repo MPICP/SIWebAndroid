@@ -35,7 +35,7 @@
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <mo.edu.ipm.siweb.ui.component.NoScrollViewPager
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"

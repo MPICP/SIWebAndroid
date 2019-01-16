@@ -10,13 +10,14 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import mo.edu.ipm.siweb.data.database.converter.BooleanArrayConverter;
 import mo.edu.ipm.siweb.data.database.converter.DateConverter;
+import mo.edu.ipm.siweb.data.database.converter.LocalDateTimeConverter;
 import mo.edu.ipm.siweb.data.database.dao.ClassTimeDao;
 import mo.edu.ipm.siweb.data.database.dao.ExamTimeDao;
 import mo.edu.ipm.siweb.data.model.ClassTime;
 import mo.edu.ipm.siweb.data.model.ExamTime;
 
 @Database(entities = {ExamTime.class, ClassTime.class}, version = 1)
-@TypeConverters({DateConverter.class, BooleanArrayConverter.class})
+@TypeConverters({LocalDateTimeConverter.class, DateConverter.class, BooleanArrayConverter.class})
 public abstract class SIWebRoomDatabase extends RoomDatabase {
 
     public abstract ExamTimeDao mExamTimeDao();

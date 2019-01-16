@@ -1,13 +1,26 @@
 package mo.edu.ipm.siweb.data.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.alamkanak.weekview.WeekViewEvent;
 
+import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.temporal.TemporalField;
+import org.threeten.bp.temporal.WeekFields;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -22,6 +35,8 @@ public class ClassTimeViewModel extends AndroidViewModel {
     private ClassTimeRepository mRepository;
     public boolean isLoading;
 
+    public static final String TAG = "ClassTimeViewModel";
+
     public ClassTimeViewModel(@NonNull Application application) {
         super(application);
         mRepository = ClassTimeRepository.getInstance(application);
@@ -33,50 +48,81 @@ public class ClassTimeViewModel extends AndroidViewModel {
     }
 
     public List<WeekViewEvent> getClassTimeEvents(int newYear, int newMonth) {
-        List<WeekViewEvent> events = new ArrayList<>();
+        LocalDate thisMonth = LocalDate.of(newYear, newMonth, 1);
         if (mClassTime == null) {
             getClassTime();
+            return null;
         } else {
+            List<WeekViewEvent> events = new ArrayList<>();
             for (ClassTime classTime : mClassTime.getValue()) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(newYear, newMonth, 1);                                       // set to first day of month
-                boolean[] weekDays = classTime.getOnWeekDays();                                 // get weekdays in event
-                for (int i = 0; i != weekDays.length; ++i) {                                    // generate events for different weekday
-                    if (!weekDays[i]) continue;
-                    calendar.set(Calendar.DAY_OF_WEEK, i);                                      // first occurrence of this time
-                    while (calendar.get(Calendar.MONTH) <= newMonth) {                          // while still in this month
-                        events.add(getEvent(calendar, classTime));
-                        calendar.add(Calendar.DAY_OF_MONTH, 7);
-                    }
-                    calendar.set(newYear, newMonth, 1);                                   // reset calendar
+                Log.i(TAG, classTime.getClassCode() + classTime.getName() + classTime.getStartedAt() + classTime.getEndedAt());
+            }
+            for (ClassTime classTime : mClassTime.getValue()) {
+                Log.d(TAG, classTime.getName() + Arrays.toString(classTime.getOnWeekDays()));
+                for (LocalDate today : getAvailableWeeks(classTime, thisMonth)) {
+                    events.add(getEvent(today, classTime));
                 }
             }
+            return events;
         }
-        return events;
     }
 
-    private WeekViewEvent getEvent(Calendar calendar, ClassTime classTime) {
+    public List<LocalDate> getAvailableWeeks(ClassTime classTime, LocalDate firstDayOfMonth) {
+        // We get all start dates, we change the day to monday and we add one week to the minimum until we hit the maximum.
+        final List<LocalDate> result = new ArrayList<>();
+        LocalDate start = classTime.getStartedAt();
+        LocalDate end = classTime.getEndedAt();
+        LocalDate lastDayOfMonth = firstDayOfMonth.withDayOfMonth(firstDayOfMonth.lengthOfMonth());
+
+        LocalDate min = firstDayOfMonth;
+        LocalDate max = lastDayOfMonth;
+
+        // end < firstDayOfMonth || start > lastDayOfMonth
+        if (end.isBefore(firstDayOfMonth) || lastDayOfMonth.isBefore(start)) {
+            return Collections.emptyList();
+        }
+
+        // start > firstDayOfMonth && start < lastDayOfMonth
+        if (firstDayOfMonth.isBefore(start) && start.isBefore(lastDayOfMonth)) {
+            min = start;
+        }
+        // end > firstDayOfMonth && end < lastDayOfMonth
+        if (firstDayOfMonth.isBefore(end) && lastDayOfMonth.isBefore(end)) {
+            max = end;
+        }
+
+        // Locale.CHINA is not in ISO format
+        TemporalField fieldISO = WeekFields.of(Locale.FRANCE).dayOfWeek();
+
+        boolean[] weekDays = classTime.getOnWeekDays();
+        for (int day = 1; day != 8; ++day) {
+            if (!weekDays[day - 1])
+                continue;
+            LocalDate thisMin = min.with(fieldISO, day);
+            LocalDate thisMax = max.with(fieldISO, day);
+
+            LocalDate current = thisMin;
+            while (!current.isAfter(thisMax)) {
+                result.add(current);
+                current = current.plusWeeks(1);
+            }
+        }
+
+        return result;
+    }
+
+    private WeekViewEvent getEvent(LocalDate today, ClassTime classTime) {
         WeekViewEvent weekViewEvent = new WeekViewEvent();
         weekViewEvent.setName(classTime.getName());
         weekViewEvent.setLocation(classTime.getLocation());
 
-        Calendar startTime = Calendar.getInstance();
-        Date startedAt = classTime.getStartedAt();
-        startTime.setTime(startedAt);
-        startTime.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
-        startTime.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
-        startTime.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+        ZonedDateTime startDateTime = LocalDateTime.of(today, classTime.getStartTime()).atZone(ZoneId.systemDefault());
+        ZonedDateTime endDateTime = LocalDateTime.of(today, classTime.getEndTime()).atZone(ZoneId.systemDefault());
 
-        weekViewEvent.setStartTime(startTime);
+        weekViewEvent.setStartTime(DateTimeUtils.toGregorianCalendar(startDateTime));
+        weekViewEvent.setEndTime(DateTimeUtils.toGregorianCalendar(endDateTime));
 
-        Calendar endTime = calendar.getInstance();
-        endTime.setTime(classTime.getEndedAt());
-        endTime.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
-        endTime.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
-        endTime.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
-
-        weekViewEvent.setEndTime(endTime);
-
+//        Log.i(TAG, weekViewEvent.getName() + ": " + weekViewEvent.getStartTime().getTime() + " - " + weekViewEvent.getEndTime().getTime());
 
         return weekViewEvent;
     }

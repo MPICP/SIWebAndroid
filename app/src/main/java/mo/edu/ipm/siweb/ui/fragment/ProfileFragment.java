@@ -22,6 +22,7 @@ import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.ui.SecondaryActivity;
 
 import static mo.edu.ipm.siweb.ui.SecondaryActivity.ARG_FRAGMENT;
+import static mo.edu.ipm.siweb.ui.SecondaryActivity.FRAGMENT_GRADE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -146,6 +147,7 @@ public class ProfileFragment extends Fragment {
 
         switch (item.getId()) {
             case R.id.list_item_grade:
+                fragment = FRAGMENT_GRADE;
                 break;
             case R.id.list_item_absence:
                 break;

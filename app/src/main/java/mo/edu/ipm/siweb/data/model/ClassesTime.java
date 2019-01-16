@@ -4,6 +4,7 @@ import org.jsoup.nodes.Element;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
+import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.text.ParseException;
@@ -52,6 +53,7 @@ public class ClassesTime {
             prevClassCode = element.child(1).text();
             prevSubject = element.child(2).text();
         }
+
         String location = element.select("td:nth-last-child(10)").text();
         // TODO set time and date, interval
         String period = element.select("td:nth-last-child(9)").text();
@@ -60,19 +62,21 @@ public class ClassesTime {
         String time = element.select("td:nth-last-child(8)").text();
         String[] timeArr = time.split("-");
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         ClassTime classTime = new ClassTime();
 //        classTime.setBaseEvent(prevSubject, location, startedAt, endedAt);
 //        classTime.setRecurring(true);
         classTime.setName(prevSubject);
         classTime.setLocation(location);
-        try {
-            classTime.setStartedAt(format.parse(periodArr[0] + ' ' + timeArr[0]));
-            classTime.setEndedAt(format.parse(periodArr[1] + ' ' + timeArr[1]));
-        } catch (ParseException e) {
-            return null;
-        }
+
+        classTime.setStartedAt(LocalDate.parse(periodArr[0], formatter));
+        classTime.setEndedAt(LocalDate.parse(periodArr[1], formatter));
+
+        classTime.setStartTime(LocalTime.parse(timeArr[0], timeFormatter));
+        classTime.setEndTime(LocalTime.parse(timeArr[1], timeFormatter));
+
         classTime.setSem(prevSem);
         classTime.setClassCode(prevClassCode);
         classTime.setInstructor(element.select("td:nth-last-child(11)").text());
@@ -91,11 +95,11 @@ public class ClassesTime {
         boolean[] weekDays = new boolean[7];
         for (int i = 1; i != 8; ++i) {
             boolean hasClass = !element.select("td:nth-last-child(" + i + ") img").isEmpty();
-                // Sat Fri Thu Wed Tue Mon Sun 1 2 3 4 5 6 7
-                // Sun Mon Tue Wed Thu Fri Sat 7 6 5 4 5 2 1 -> 0 1 2 3 4 5 6
-                // Mon Tue Wed Thu Fri Sat Sun
+            // Sat Fri Thu Wed Tue Mon Sun 1 2 3 4 5 6 7 -(%7)-> 1 2 3 4 5 6 0
+            // Sun Sat Fri Thu Wed Tue Mon 0 1 2 3 4 5 6 -(6-)-> 6 5 4 3 2 1 0
+            // Mon Tue Wed Thu Fri Sat Sun 0 1 2 3 4 5 6
             if (hasClass) {
-                int index = 7 - i;
+                int index = 6 - (i % 7);
                 weekDays[index] = true;
             }
         }
