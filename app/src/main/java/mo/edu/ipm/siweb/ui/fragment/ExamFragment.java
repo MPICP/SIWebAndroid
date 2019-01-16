@@ -23,7 +23,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.model.ExamTime;
 import mo.edu.ipm.siweb.data.viewmodel.ExamTimeViewModel;
-import mo.edu.ipm.siweb.util.LocalDateTimeEx;
 
 /**
  * A simple {@link Fragment} subclass.

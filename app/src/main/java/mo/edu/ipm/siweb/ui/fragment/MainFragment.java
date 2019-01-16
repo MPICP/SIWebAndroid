@@ -20,8 +20,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import mo.edu.ipm.siweb.R;
+import mo.edu.ipm.siweb.data.model.ClassTime;
+import mo.edu.ipm.siweb.data.viewmodel.MainViewModel;
 
 
 /**
@@ -48,6 +52,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private View mEmptyView;
+    private MainViewModel mViewModel;
 
     public MainFragment() {
         // Required empty public constructor
@@ -92,8 +97,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
         setUpActionBar();
-        // TODO testing
-        loadMockCard();
+        loadCards();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -123,7 +127,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
-        loadMockCard();
+        loadCards();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -150,6 +154,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         mMaterialListView.setEmptyView(mEmptyView);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     }
 
     private void setUpActionBar() {
@@ -157,33 +163,20 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
     }
 
-    private void loadMockCard() {
-        Card card = new Card.Builder(getContext())
-                .withProvider(new CardProvider())
-                .setLayout(R.layout.material_basic_buttons_card)
-                .setTitle("Card number 4")
-                .setDescription("Lorem ipsum dolor sit amet")
-                .addAction(R.id.left_text_button, new TextViewAction(getContext())
-                        .setText("Izquierda")
-                        .setTextResourceColor(R.color.black_button)
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            public void onActionClicked(View view, Card card) {
-                                Toast.makeText(getContext(), "You have pressed the left button", Toast.LENGTH_SHORT).show();
-                            }
-                        }))
-                .addAction(R.id.right_text_button, new TextViewAction(getContext())
-                        .setText("Derecha")
-                        .setTextResourceColor(R.color.accent_material_dark)
-                        .setListener(new OnActionClickListener() {
-                            @Override
-                            public void onActionClicked(View view, Card card) {
-                                Toast.makeText(getContext(), "You have pressed the right button", Toast.LENGTH_SHORT).show();
-                            }
-                        }))
-                .endConfig()
-                .build();
-        card.setDismissible(true);
-        mMaterialListView.getAdapter().add(card);
+    private void loadCards() {
+        mViewModel.getOnGoingClass().observe(this, t -> {
+            if (t != null) {
+                mMaterialListView.getAdapter().clearAll();
+                for (ClassTime classTime : t) {
+                    Card card = new Card.Builder(getContext())
+                            .withProvider(new CardProvider())
+                            .setLayout(R.layout.material_card_class)
+                            .setTitle(classTime.getName())
+                            .setDescription(classTime.getStartTime() + " - " + classTime.getEndTime())
+                            .endConfig().build();
+                    mMaterialListView.getAdapter().add(card);
+                }
+            }
+        });
     }
 }
