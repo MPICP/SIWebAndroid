@@ -119,10 +119,7 @@ public class ExamFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(true);
-//        mViewModel.getExamTime();
-        mRecyclerView.getAdapter().notifyDataSetChanged();
-        mSwipeRefreshLayout.setRefreshing(false);
+        refreshData();
     }
 
     /**
@@ -155,10 +152,15 @@ public class ExamFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
+        refreshData();
+    }
 
+    private void refreshData() {
+        mSwipeRefreshLayout.setRefreshing(true);
         mViewModel.getExamTime().observe(this, t -> {
             if (t != null) {
                 mAdapter.setExamTime(t);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }

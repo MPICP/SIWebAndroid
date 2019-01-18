@@ -7,24 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.dexafree.materialList.card.Card;
-import com.dexafree.materialList.card.CardProvider;
-import com.dexafree.materialList.card.OnActionClickListener;
-import com.dexafree.materialList.card.action.TextViewAction;
-import com.dexafree.materialList.view.MaterialListView;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import mo.edu.ipm.siweb.R;
 import mo.edu.ipm.siweb.data.model.ClassTime;
+import mo.edu.ipm.siweb.data.model.Event;
 import mo.edu.ipm.siweb.data.viewmodel.MainViewModel;
 
 
@@ -46,7 +43,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private String mParam1;
     private String mParam2;
 
-    private MaterialListView mMaterialListView;
+    private ViewGroup mCardContainer;
 
     private OnFragmentInteractionListener mListener;
     private Toolbar mToolbar;
@@ -126,9 +123,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(true);
         loadCards();
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**
@@ -147,12 +142,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void bindView(View view) {
-        mMaterialListView = view.findViewById(R.id.material_listview);
-        mEmptyView = ((ViewStub) view.findViewById(R.id.material_listview_empty)).inflate();
+        mCardContainer = view.findViewById(R.id.cards_container);
+//        mEmptyView = ((ViewStub) view.findViewById(R.id.material_listview_empty)).inflate();
         mToolbar = view.findViewById(R.id.toolbar);
         mSwipeRefreshLayout = view.findViewById(R.id.pullToRefresh);
 
-        mMaterialListView.setEmptyView(mEmptyView);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -164,18 +158,32 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void loadCards() {
+        mSwipeRefreshLayout.setRefreshing(true);
         mViewModel.getOnGoingClass().observe(this, t -> {
             if (t != null) {
-                mMaterialListView.getAdapter().clearAll();
-                for (ClassTime classTime : t) {
-                    Card card = new Card.Builder(getContext())
-                            .withProvider(new CardProvider())
-                            .setLayout(R.layout.material_card_class)
-                            .setTitle(classTime.getName())
-                            .setDescription(classTime.getStartTime() + " - " + classTime.getEndTime())
-                            .endConfig().build();
-                    mMaterialListView.getAdapter().add(card);
+                mCardContainer.removeAllViews();
+                for (Event classTime : t) {
+                    classTime.getName();
+                    View v = LayoutInflater.from(getContext()).inflate(R.layout.material_card_class, null);
+                    TextView textView = v.findViewById(R.id.textViewClassName);
+                    textView.setText(classTime.getName());
+                    textView = v.findViewById(R.id.textViewTime);
+                    textView.setText(classTime.getStartTime() + " - " + classTime.getEndTime());
+                    textView = v.findViewById(R.id.textClassStatus);
+                    switch (classTime.getStatus()) {
+                        case Event.ONGOING:
+                            textView.setText("● Ongoing");
+                            break;
+                        case Event.SCHEDULED:
+                            textView.setText("● Scheduled");
+                            break;
+                        case Event.CANCELLED:
+                            textView.setText("● Cancelled");
+                            break;
+                    }
+                    mCardContainer.addView(v);
                 }
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }

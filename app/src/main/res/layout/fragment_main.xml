@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|snap" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -30,24 +31,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <com.dexafree.materialList.view.MaterialListView
-                    android:id="@+id/material_listview"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/material_basic_buttons_card" />
-
-                <ViewStub
-                    android:id="@+id/material_listview_empty"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout="@layout/view_empty" />
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    android:text="Welcome to SIWeb Android. You are in the alpha test of this application. Functions are incomplete and there might be many bugs. Please try to clear the data or reinstall the application if this app crashes or malfunctioned.\n\nFor contribution, you can create a pull request to https://github.com/MPICP/SIWebAndroid. Your support is very important to us." />
 
-            </FrameLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/cards_container">
+
+                </LinearLayout>
+
+                <!--<ViewStub-->
+                <!--android:id="@+id/material_listview_empty"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout="@layout/view_empty" />-->
+
+            </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
